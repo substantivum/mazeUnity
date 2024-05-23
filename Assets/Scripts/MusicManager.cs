@@ -26,7 +26,6 @@ public class MusicManager : MonoBehaviour
 
     private void Update()
     {
-        changeVolume();
     }
     public static MusicManager Instance
     {
