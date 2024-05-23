@@ -59,18 +59,21 @@ public class MainMenuScript : MonoBehaviour
         easyLevelButton.onClick.AddListener(() =>
         {
             PlayerPrefs.SetInt("Difficulty", (int)GameManager.Difficulty.Easy);
+            PlayerPrefs.SetFloat("TimeLevel", 60f);
             SceneManager.LoadScene("Scenes/Game");
         });
 
         midLevelButton.onClick.AddListener(() =>
         {
             PlayerPrefs.SetInt("Difficulty", (int)GameManager.Difficulty.Medium);
+            PlayerPrefs.SetFloat("TimeLevel", 80f);
             SceneManager.LoadScene("Scenes/Game");
         });
 
         hardLevelButton.onClick.AddListener(() =>
         {
             PlayerPrefs.SetInt("Difficulty", (int)GameManager.Difficulty.Hard);
+            PlayerPrefs.SetFloat("TimeLevel", 120f);
             SceneManager.LoadScene("Scenes/Game");
         });
 

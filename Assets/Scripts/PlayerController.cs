@@ -29,7 +29,17 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        StartCoroutine(levelLoader());
+    }
+
+    IEnumerator levelLoader()
+    {
+        print("Loading difficulty");
+        yield return new WaitForSeconds(1);
         gameDifficulty = gm.CurrentDifficulty;
+        print("player level " + gameDifficulty);
+        yield return null;
+
     }
     private void Update()
     {

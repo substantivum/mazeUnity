@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     private bool gameOver = false;
 
+    public enum timeDifficulty { EASY, MEDIUM, HARD }
     public enum Difficulty { Easy, Medium, Hard }
     public Difficulty CurrentDifficulty { get; private set; }
 
@@ -60,9 +61,10 @@ public class GameManager : MonoBehaviour
         mazeGenerator = FindObjectOfType<MazeGenerator>();
         animator = player.GetComponentInChildren<Animator>();
         
+        
+        LoadDifficulty();
+        setDifficulty(CurrentDifficulty);
         player.enabled = true;
-        //LoadDifficulty();
-        setDifficulty(Difficulty.Easy);
         NewGame(false);
 
     }
@@ -75,8 +77,6 @@ public class GameManager : MonoBehaviour
             UpdateScore();
 
             coinsText.SetText("Coins collected: " + coinsCollected + "/3");
-
-
         }
     }
 
@@ -88,8 +88,10 @@ public class GameManager : MonoBehaviour
     {
         int savedDifficulty = PlayerPrefs.GetInt("Difficulty", (int)Difficulty.Easy);
         CurrentDifficulty = (Difficulty)savedDifficulty;
+        maxTime = PlayerPrefs.GetFloat("TimeLevel", 30f);
         Debug.Log("Loaded difficulty: " + CurrentDifficulty);
     }
+   
 
     public void setDifficulty(Difficulty difficulty)
     {
@@ -125,20 +127,18 @@ public class GameManager : MonoBehaviour
         switch (CurrentDifficulty)
         {
             case Difficulty.Medium:
-                maxTime = 40f;
                 return mediumSettings;
             case Difficulty.Hard:
-                maxTime = 60f;
                 return hardSettings;
             default:
-                maxTime = 30f;
                 return easySettings;
         }
     }
 
     void StartTimer()
     {
-        timeRemaining = 30f;
+        print("set timer maxtime" + maxTime);
+        timeRemaining = maxTime;
         UpdateText();
 
     }
@@ -160,7 +160,6 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateText()
     {
-
         string formattedTime = $"{Mathf.FloorToInt(timeRemaining / 60):00}:{Mathf.FloorToInt(timeRemaining % 60):00}";
         timeLeftText.text = formattedTime;
     }
@@ -196,7 +195,6 @@ public class GameManager : MonoBehaviour
             gameStatusText.gameObject.SetActive(true);
             buttons.SetActive(true);
             player.enabled = false;
-            animator.SetBool("Victory_b", true);
             gameOver = true;
             scoreText.gameObject.SetActive(false);
 
@@ -211,7 +209,7 @@ public class GameManager : MonoBehaviour
             animator.SetBool("Run_b", false);
             gameOver = true;
             scoreText.gameObject.SetActive(true);
-
+            animator.SetBool("Victory_b", true);
         }
 
     }
